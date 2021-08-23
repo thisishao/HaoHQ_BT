@@ -1,5 +1,6 @@
 <?php session_start();
 	include 'connect.php';
+
 	$error_email = $error_pwd = $dangnhap = "";
 	$check = 1;
 	if (isset($_POST['sub-log'])) {
@@ -29,12 +30,16 @@
 			$check_dn = $con->query($sql);
 
 			if ($check_dn->num_rows > 0) {
-				$dangnhap = "Chào ".$_SESSION['name']." <a href='index.php'>Click</a> vào đây để trở về trang chủ <3";
+				$dangnhap = "<script type=”text/javascript” >location.replace(index.php)</script>";
 				$row = $check_dn -> fetch_assoc();
 			
 				$_SESSION['name'] = $row['name'];
+				$_SESSION['id'] = $row['id'];
 
+ 
 				echo $_SESSION['name'];
+				echo $_SESSION['id'];
+				header("location: index.php");
 
 			}else{
 				$dangnhap = "Đăng nhập thất bại vui lòng thử lại";
@@ -378,3 +383,4 @@
     <script src="js/main.js"></script>
 </body>
 </html>
+<?php include 'hide.php'; ?>

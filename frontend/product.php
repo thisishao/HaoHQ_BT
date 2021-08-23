@@ -1,71 +1,54 @@
-<?php 
-	include 'connect.php';
-	$check = 1;
-	$error_name = $error_email = $error_pwd = $error_repwd = $dk = "";
-	if (isset($_POST['sub-sig'])) {
+<?php session_start();
+    include 'connect.php';
+    $error_product = $html = $htmls ="";
 
-		if (empty($_POST['name'])) {
-			$error_name = "Vui lòng nhập tên !!!";
-			$check = 0;
-		}else{
-            if (!preg_match("/^[a-zA-Z ]*$/",$_POST["name"])) {
-              $error_name = "<span style='color:red;'>Lỗi: Họ tên chỉ chấp nhận chữ</span>";
-              $check = 0;
-            }
-		}
+    $id = $_SESSION['id'];
+    $sql = "SELECT * FROM `product` ORDER BY `id`";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+        	$val[] = $row;	
+    	}
 
 
-		if (empty($_POST['email'])) {
-			$error_email = "Vui lòng nhập Email !!!";
-			$check = 0;
-		}else{
-			$getEmail = $_POST['email'];
-			
-            if (!filter_var($getEmail, FILTER_VALIDATE_EMAIL)) {
-				$error_email = "Vui lòng nhập đúng định dạng Email !!!";
-				$check = 0;
-            }else{
-            	$kt_email = "SELECT * FROM `user` WHERE `email`='".$getEmail."'";
-							$kt = $con->query($kt_email);
-            	if ($kt->num_rows > 0) {
-            		$error_email = "Email đã tồn tại !!!";
-            		$check = 0;
-            	}
-            }
-		}
+    	 $html = '';
 
-		if (empty($_POST['pwd'])) {
+	    foreach ($val as $data) {
+	    	$html .= '
+				<tbody>
+					<tr>
+						<td>'.$data['title'].'</td>
+						<td>'.$data['price'].'</td>
+						<td>'.$data['image'].'</td>
+						<td><a href="edit-pro.php?id='.$data['id'].'">Edit</a></td>
+                    	<td><a href="del-pro.php?id='.$data['id'].'"> Delete</a></td>
+					</tr>
+				</tbody	
+	    	';
+	    }
 
-			$error_pwd = "Vui lòng nhập mật khẩu !!!";
-			$check = 0;
-		}
-		if (empty($_POST['re-pwd'])) {
-			$error_repwd = "Vui lòng nhập mật khẩu !!!";
-			$check = 0;
-		}else{
-			if ($_POST['re-pwd'] != $_POST['pwd']) {
-				$error_repwd = "Mật khẩu không giống vui lòng nhập lại !!!";
-				$check = 0;
-			}
-		}
-		
-		if ($check == 1) {
-			$pwd = md5($_POST['pwd']);
-			$sql = "INSERT INTO `user`(`email`, `pass`, `name`, `avatar`) 
-				VALUES ('".$_POST['email']."','".$pwd."','".$_POST['name']."','".$_POST['name']."')";
+	    $htmls = '';
 
-				if ($result = $con->query($sql)) {
-					$dk = "Bạn đã đăng ký thành công <3 Vui lòng <a href='login.php'>Click</a> vào đây để trở về trang đăng nhập!!!";
-				}else{
-					$dk = "Đăng ký thất bại Vui lòng <a href='login.php'>Click</a> vào đây để trở về trang đăng nhập!!!";
-				}
+	    $htmls .='
+	    	    <thead>
+					<tr>
+						<th scope="col">Title</th>
+						<th scope="col">Price</th>
+						<th scope="col">Image</th>
+						<th scope="col">Edit</th>
+						<th scope="col">Delete</th>
+					</tr>
+				</thead>';
+    }else{
+      $error_product = "<span style='color:red;'>Bạn kh có sản phẩm nào <a href='add-product.php'>Click</a> vào đây để thêm sản phẩm</span>";
+    }
 
-		
-		}
 
-	}
+
+
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -74,7 +57,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Login | E-Shopper</title>
+    <title>Contact | E-Shopper</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/prettyPhoto.css" rel="stylesheet">
@@ -138,7 +121,8 @@
 									<li><a href="">Canada</a></li>
 									<li><a href="">UK</a></li>
 								</ul>
-							</div>						
+							</div>
+							
 							<div class="btn-group">
 								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
 									DOLLAR
@@ -154,10 +138,10 @@
 					<div class="col-md-8 clearfix">
 						<div class="shop-menu clearfix pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href=""><i class="fa fa-user"></i> Account</a></li>
+								<li><a href="Account.php"><i class="fa fa-user"></i> Account</a></li>
 								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li><a href="cart.php"><i class="fa fa-shopping-cart"></i> Cart</a></li>
 								<li><a href="login.php"><i class="fa fa-lock"></i> Login</a></li>
 							</ul>
 						</div>
@@ -187,7 +171,7 @@
 										<li><a href="product-details.html">Product Details</a></li> 
 										<li><a href="checkout.html">Checkout</a></li> 
 										<li><a href="cart.html">Cart</a></li> 
-										<li><a href="login.html" class="active">Login</a></li> 
+										<li><a href="login.html">Login</a></li> 
                                     </ul>
                                 </li> 
 								<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
@@ -210,27 +194,46 @@
 			</div>
 		</div><!--/header-bottom-->
 	</header><!--/header-->
-	
-	<section id="form"><!--form-->
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-4">
-					<div class="signup-form"><!--sign up form-->
-						<h1 style="color: red;">New User Signup!</h1>
-						<h3><span><?php echo $dk ?></span></h3>
-						<form action="" method="POST">
-							<input type="text" placeholder="Name" name="name" /><span style='color:red;'><?php echo $error_name ?></span>
-							<input type="email" placeholder="Email Address" name="email" /><span style='color:red;'><?php echo $error_email ?></span>
-							<input type="password" placeholder="Password" name="pwd" /><span style='color:red;'><?php echo $error_pwd ?></span>
-							<input type="password" placeholder="Re-Password" name="re-pwd" /><span style='color:red;'><?php echo $error_repwd ?></span>
-							<button type="submit" class="btn btn-default" name="sub-sig">Signup</button>
-						</form>
-					</div><!--/sign up form-->
-				</div>
-			</div>
-		</div>
-	</section><!--/form-->
-	
+	 
+	 <div id="contact-page" class="container">
+    	<div class="bg">
+	    	<div class="row">    		
+	    		<div class="col-sm-12">    			   			
+					<h2 class="title text-center">My product </h2>    			    				    	
+				</div>			 		
+			</div>    	
+    		<div class="row">  	
+   				<div class="col-sm-3">
+   					<div class="left-sidebar">
+   						<h2>Account</h2>
+   						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="account.php">Account </a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="product.php">My product</a></h4>
+								</div>
+							</div>
+						</div>
+   					</div>
+   				</div>
+   				<div class="col-sm-9 padding-right">
+   					<h3><?php echo $error_product; ?></h3>
+
+   					<table class="table table-hover">
+ 						<tbody>
+ 							<?php echo $htmls; ?>
+ 							<?php echo $html; ?>
+ 						</tbody>
+ 						<button type="button" class="btn btn-primary"><a href="add-product.php">Thêm SP</a></button>
+					</table>
+   				</div>
+	    	</div>  
+    	</div>	
+    </div><!--/#contact-page-->
 	
 	<footer id="footer"><!--Footer-->
 		<div class="footer-top">
@@ -393,9 +396,12 @@
 
   
     <script src="js/jquery.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+    <script type="text/javascript" src="js/gmaps.js"></script>
+	<script src="js/contact.js"></script>
 	<script src="js/price-range.js"></script>
     <script src="js/jquery.scrollUp.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.prettyPhoto.js"></script>
     <script src="js/main.js"></script>
 </body>
