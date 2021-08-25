@@ -1,7 +1,7 @@
 <?php session_start();
 
 	echo $_SESSION['name'];
-
+	// session_destroy();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -91,13 +91,13 @@
 					<div class="col-md-8 clearfix">
 						<div class="shop-menu clearfix pull-right">
 							<ul class="nav navbar-nav">
-								<li class="acc"><a href="account.php"><i class="fa fa-user"></i> Account</a></li>
+								<li class="acc"><a href="editacc.php"><i class="fa fa-user"></i> Account</a></li>
 								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
 								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
 								<li class="log"><a href="login.php"><i class="fa fa-lock"></i> Login</a></li>
 								<li class="re"><a href="Register.php"><i class="fa fa-user"></i> Register</a></li>
-								<li class="log-out"><a href="index.php?hello=true" ><i class="fa fa-lock"></i> Logout</a></li>
+								<li class="log-out"><a href="logout.php" ><i class="fa fa-lock"></i> Logout</a></li>
 							</ul>
 						</div>
 					</div>
@@ -277,7 +277,7 @@
 											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
 											Womens
 										</a>
-									</h4>
+									</h4>giy
 								</div>
 								<div id="womens" class="panel-collapse collapse">
 									<div class="panel-body">

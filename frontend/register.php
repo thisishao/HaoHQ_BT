@@ -2,6 +2,7 @@
 	include 'connect.php';
 	$check = 1;
 	$error_name = $error_email = $error_pwd = $error_repwd = $dk = "";
+
 	if (isset($_POST['sub-sig'])) {
 
 		if (empty($_POST['name'])) {

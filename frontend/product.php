@@ -3,7 +3,7 @@
     $error_product = $html = $htmls ="";
 
     $id = $_SESSION['id'];
-    $sql = "SELECT * FROM `product` ORDER BY `id`";
+    $sql = "SELECT * FROM `product` WHERE `user_id` = ".$id."";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
@@ -138,11 +138,13 @@
 					<div class="col-md-8 clearfix">
 						<div class="shop-menu clearfix pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="Account.php"><i class="fa fa-user"></i> Account</a></li>
+								<li class="acc"><a href="editacc.php"><i class="fa fa-user"></i> Account</a></li>
 								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.php"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li><a href="login.php"><i class="fa fa-lock"></i> Login</a></li>
+								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li class="log"><a href="login.php"><i class="fa fa-lock"></i> Login</a></li>
+								<li class="re"><a href="Register.php"><i class="fa fa-user"></i> Register</a></li>
+								<li class="log-out"><a href="logout.php" ><i class="fa fa-lock"></i> Logout</a></li>
 							</ul>
 						</div>
 					</div>
@@ -209,7 +211,7 @@
    						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="account.php">Account </a></h4>
+									<h4 class="panel-title"><a href="editacc.php">Account </a></h4>
 								</div>
 							</div>
 							<div class="panel panel-default">
@@ -406,3 +408,4 @@
     <script src="js/main.js"></script>
 </body>
 </html>
+<?php include 'hide.php'; ?>

@@ -35,12 +35,12 @@
               $check = 0;
             }
         }
-
+        $id = $_SESSION['id'];
 
         if ($check == 1) {
             if (isset($_GET['id'])) {
                 
-                $sql = "UPDATE `product` SET `title`='".$_POST['title']."',`price`='".$_POST['price']."',`image`='".$_POST['image']."' WHERE `id` = ".$_GET['id']."";
+                $sql = "UPDATE `product` SET `user_id`='".$id."',`title`='".$_POST['title']."',`price`='".$_POST['price']."',`image`='".$_POST['image']."' WHERE `id` = ".$_GET['id']."";
                 if ($result = $con->query($sql)) {
                     $dk = "<span style='color:red;'>Chỉnh sửa thông tin thành công Click vào <a href='product.php'>đây</a> để về trang chủ</span>";
                 }else{
@@ -48,7 +48,7 @@
                 }
 
             }else{
-                $sql = "INSERT INTO `product`(`title`, `price`, `image`) VALUES ('".$_POST['title']."','".$_POST['price']."','".$_POST['image']."')";
+                $sql = "INSERT INTO `product`(`user_id`, `title`, `price`, `image`) VALUES ('".$id."','".$_POST['title']."','".$_POST['price']."','".$_POST['image']."')";
 
                 if ($result = $con->query($sql)) {
  
