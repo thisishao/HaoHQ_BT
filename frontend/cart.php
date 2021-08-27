@@ -1,29 +1,4 @@
-<?php session_start();
-	include 'connect.php';
-
-	$id = $_POST['getIdproduct']; 
-	// echo $id;
-	$Product = [];
-	
-	if (isset($id)) {
-		$sql = "SELECT * FROM `product` WHERE `id` = ".$id."";
-		$result = $con->query($sql);
-		if ($result->num_rows > 0) {
-			while ($row = $result -> fetch_assoc()) {
-				$Product["title"] = $row['title'];
-				$Product["price"] = $row['price'];
-				$Product["image"] = $row['image'];
-			}
-		}
-		$_SESSION['cart'][$id] = $Product;
-		print_r($_SESSION['cart']);
-
-	}
-
-	// unset($_SESSION['cart'][$id]);
-	// session_destroy();
-?>
-
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -121,7 +96,9 @@
 								<li class="acc"><a href="editacc.php"><i class="fa fa-user"></i> Account</a></li>
 								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.php"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li><a href="cart.php"><i class="fa fa-shopping-cart"></i> <?php if (isset($_SESSION['cart'])) {
+									echo count($_SESSION['cart']);
+								} ?></a></li>
 								<li class="log"><a href="login.php"><i class="fa fa-lock"></i> Login</a></li>
 								<li class="re"><a href="Register.php"><i class="fa fa-user"></i> Register</a></li>
 								<li class="log-out"><a href="logout.php" ><i class="fa fa-lock"></i> Logout</a></li>
@@ -199,7 +176,8 @@
 					</thead>
 					<tbody>
 						<?php foreach ($_SESSION['cart'] as $key => $val) { ?>
-							
+							<?php $tong = $_SESSION['cart'][$key]['price'] * $_SESSION['cart'][$key]['qty'] ?>
+							<?php $total = $total + $tong; ?>
 							<tr>
 								<td class="cart_product">
 									<a href=""><img id="img" src="avatar/<?php echo $_SESSION['cart'][$key]['image']; ?>"></a>
@@ -213,18 +191,18 @@
 								</td>
 								<td class="cart_quantity">
 									<div class="cart_quantity_button">
-										<a class="cart_quantity_up" href=""> + </a>
-										<input class="cart_quantity_input" type="text" name="quantity" value="10" autocomplete="off" size="2">
-										<a class="cart_quantity_down" href=""> - </a>
+										<a class="cart_quantity_up" href="" id="<?php echo $key;?>"> + </a>
+										<input class="cart_quantity_input" type="text" name="quantity" value="<?php echo $_SESSION['cart'][$key]['qty'];?>" autocomplete="off" size="2">
+										<a class="cart_quantity_down" href="" id="<?php echo $key; ?>"> - </a>
 									</div>
 								</td>
 								<td class="cart_total">
-									<p class="cart_total_price">10$</p>
+									<p class="cart_total_price"><?php echo $tong ?></p>
 								</td>
 								<td class="cart_delete">
 								<form method="POST">
 									<input type="hidden" name="keys" value="<?php echo $key ?>">
-									<button class="cart_quantity_delete" name="del"><i class="fa fa-times"></i></button>
+									<a class="cart_quantity_delete" href="" id="<?php echo $key; ?>"><i class="fa fa-times" id="<?php echo $key; ?>"></i></a>
 								</form>
 								</td>
 							</tr>
@@ -303,7 +281,7 @@
 							<li>Cart Sub Total <span>$59</span></li>
 							<li>Eco Tax <span>$2</span></li>
 							<li>Shipping Cost <span>Free</span></li>
-							<li>Total <span>$61</span></li>
+							<li>Total <span>$<?php echo $total; ?></span></li>
 						</ul>
 							<a class="btn btn-default update" href="">Update</a>
 							<a class="btn btn-default check_out" href="">Check Out</a>
@@ -481,3 +459,65 @@
 </body>
 </html>
 <?php include 'hide.php'; ?>
+<script type="text/javascript">
+	
+    	$(document).ready(function(){
+
+    		$("a.cart_quantity_up").click(function(){
+
+    			// var getID = $(xxx).find("img").attr("alt"); 
+    			var getID = $(this).attr("id");
+    			// console.log(getID);
+
+    			$.ajax({
+    				method: "POST",
+    				url: "ajax.php",
+    				data: {
+    					getIDUp: getID
+    				},
+    				success : function(response){
+    					console.log(response);
+    				}
+    			});			
+  
+    		});
+    		$("a.cart_quantity_down").click(function(){
+
+    			var getID = $(this).attr("id");
+    			// console.log(getID);
+
+    			$.ajax({
+    				method: "POST",
+    				url: "ajax.php",
+    				data: {
+    					getIdDow: getID
+    				},
+    				success : function(response){
+    					console.log(response);
+    				}
+    			});			
+  
+    		});
+
+    		// $("a.cart_quantity_delete").click(function(){
+ 
+    		// 	var getID = $(this).attr("id");
+    		// 	// console.log(getID);
+
+    		// 	$.ajax({
+    		// 		method: "POST",
+    		// 		url: "ajax.php",
+    		// 		data: {
+    		// 			getIdDel: getID
+    		// 		},
+    		// 		success : function(response){
+    		// 			console.log(response);
+    		// 		}
+    		// 	});			
+  
+    		// });
+
+
+    	})
+
+</script>

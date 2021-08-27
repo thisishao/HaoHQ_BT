@@ -30,7 +30,7 @@
 											<div class="overlay-content">
 												<h2>$'.$data['price'].'</h2>
 												<p>'.$data['title'].'</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+												<a id = "'.$data['id'].'"href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 											</div>
 										</div>
 								</div>
@@ -140,7 +140,9 @@
 								<li class="acc"><a href="editacc.php"><i class="fa fa-user"></i> Account</a></li>
 								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.php"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li><a href="cart.php"><i class="fa fa-shopping-cart"></i> <?php if (isset($_SESSION['cart'])) {
+									echo count($_SESSION['cart']);
+								} ?></a></li>
 								<li class="log"><a href="login.php"><i class="fa fa-lock"></i> Login</a></li>
 								<li class="re"><a href="Register.php"><i class="fa fa-user"></i> Register</a></li>
 								<li class="log-out"><a href="logout.php" ><i class="fa fa-lock"></i> Logout</a></li>
@@ -981,20 +983,19 @@ de
 
     		$("a.btn.btn-default.add-to-cart").click(function(){
 
-    			var xxx = $(this).closest("div.single-products");
-  
-    			var getID = $(xxx).find("img").attr("alt");  
+    			// var getID = $(xxx).find("img").attr("alt"); 
+    			var getID = $(this).attr("id");
     			// console.log(getID);
 
     			$.ajax({
     				method: "POST",
-    				url: "cart.php",
+    				url: "ajax.php",
     				data: {
     					getIdproduct: getID
     				},
-    				// success : function(response){
-    				// 	console.log(response);
-    				// }
+    				success : function(response){
+    					console.log(response);
+    				}
     			});			
   
     		});
