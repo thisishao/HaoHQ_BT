@@ -19,12 +19,13 @@
 					<tr>
 						<td>'.$data['title'].'</td>
 						<td>'.$data['price'].'</td>
-						<td>'.$data['image'].'</td>
+						<td><img src="avatar/'.$data['image'].'" id = "img"/></td>
 						<td><a href="edit-pro.php?id='.$data['id'].'">Edit</a></td>
                     	<td><a href="del-pro.php?id='.$data['id'].'"> Delete</a></td>
 					</tr>
 				</tbody	
 	    	';
+
 	    }
 
 	    $htmls = '';
@@ -74,6 +75,12 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+    <style type="text/css">
+    	#img{
+    		height: 120px;
+    		width: 100px;
+    	}
+    </style>
 </head><!--/head-->
 
 <body>

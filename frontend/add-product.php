@@ -177,7 +177,7 @@
    				<div class="col-sm-9 padding-right">
    					
    					<table class="table">
-   						<form action="" method="POST">
+   						<form action="" method="POST" enctype="multipart/form-data">
    							<?php echo $dk ?>
 						  <tbody>
 						    <tr>
@@ -192,7 +192,7 @@
 						    </tr>
 						    <tr>
 						      <th scope="row">Image</th>
-						      <td><input class="form-control" type="text" name="image"></td>
+						      <td><input class="form-control" type="file" name="image"></td>
 						      <?php echo $error_img ?>
 						    </tr>
 						    <tr>
