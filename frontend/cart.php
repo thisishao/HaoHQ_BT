@@ -1,6 +1,7 @@
 <?php session_start(); 
 	print_r($_SESSION['cart']);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -193,9 +194,9 @@
 								</td>
 								<td class="cart_quantity">
 									<div class="cart_quantity_button">
-										<a class="cart_quantity_up" href="" id="<?php echo $key;?>"> + </a>
+										<a href="#" id="<?php echo $key;?>" class="cart_quantity_up"> + </a>
 										<input class="cart_quantity_input" type="text" name="quantity" value="<?php echo $_SESSION['cart'][$key]['qty'];?>" autocomplete="off" size="2">
-										<a class="cart_quantity_down" href="" id="<?php echo $key; ?>"> - </a>
+										<a  href="#" id="<?php echo $key; ?>" class="cart_quantity_down"> - </a>
 									</div>
 								</td>
 								<td class="cart_total">
@@ -203,7 +204,7 @@
 								</td>
 								<td class="cart_delete">
 									<input type="hidden" name="keys" value="<?php echo $key ?>">
-									<a class="cart_quantity_delete" href="" id="<?php echo $key; ?>"><i class="fa fa-times" id="<?php echo $key; ?>"></i></a>
+									<a id="<?php echo $key; ?>" class="cart_quantity_delete"><i class="fa fa-times" id="<?php echo $key; ?>" ></i></a>
 								</td>
 							</tr>
 						<?php } ?>
@@ -465,15 +466,24 @@
 
     		$("a.cart_quantity_up").click(function(){
 
-    			// var getID = $(xxx).find("img").attr("alt"); 
-    			var getID = $(this).attr("id");
+    			var getQty = $(this).closest("tr").find("input").val();
+				$(this).closest("tr").find("input").val(parseInt(getQty) + 1);
+
+				var getPrice= $(this).closest("tr").find(".cart_price p").text();
+				var getTotal = $(this).closest("body").find("li.tong").text();
+
+				tong = (parseInt(getQty) + 1) * parseInt(getPrice);
+				$(this).closest("tr").find(".cart_total p").text(tong);
+				$(this).closest("body").find("li.tong").text(parseInt(getTotal) + parseInt(getPrice));
+
+    			var getId = $(this).attr("id");
     			// console.log(getID);
 
     			$.ajax({
     				method: "POST",
     				url: "ajax.php",
     				data: {
-    					getIDUp: getID
+    					getIDUp: getId
     				},
     				success : function(response){
     					console.log(response);
@@ -483,14 +493,29 @@
     		});
     		$("a.cart_quantity_down").click(function(){
 
-    			var getID = $(this).attr("id");
+    			var getQty = $(this).closest("tr").find("input").val();
+				var getTotal = $(this).closest("body").find("li.tong").text();
+				$(this).closest("tr").find("input").val(parseInt(getQty) - 1);
+				console.log(getQty);
+				
+				var getPrice= $(this).closest("tr").find(".cart_price p").text();
+
+				down = (parseInt(getQty) - 1) * parseInt(getPrice);
+				$(this).closest("tr").find(".cart_total p").text(down);
+				$(this).closest("body").find("li.tong").text(parseInt(getTotal) - parseInt(getPrice));
+
+				if (getQty == 1) {
+					var remove = $(this).closest("tr").remove();
+				}
+
+    			var getId = $(this).attr("id");
     			// console.log(getID);
 
     			$.ajax({
     				method: "POST",
     				url: "ajax.php",
     				data: {
-    					getIdDow: getID
+    					getIdDow: getId
     				},
     				success : function(response){
     					console.log(response);
@@ -500,15 +525,17 @@
     		});
 
     		$("a.cart_quantity_delete").click(function(){
+
+				var remove = $(this).closest("tr").remove();
  
-    			var getID = $(this).attr("id");
+    			var getId = $(this).attr("id");
     			// console.log(getID);
 
 			      $.ajax({
 			        method: "POST",
 			        url: "ajax.php",
 			        data: {
-			            getIdDel: getID
+			            getIdDel: getId
 			        },
 			        success : function(response){
 			          console.log(response);
@@ -521,3 +548,4 @@
     	})
 
 </script>
+
