@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php session_start(); 
+	print_r($_SESSION['cart']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -499,23 +501,23 @@
   
     		});
 
-    		// $("a.cart_quantity_delete").click(function(){
+    		$("a.cart_quantity_delete").click(function(){
  
-    		// 	var getID = $(this).attr("id");
-    		// 	// console.log(getID);
+    			var getID = $(this).attr("id");
+    			// console.log(getID);
 
-    		// 	$.ajax({
-    		// 		method: "POST",
-    		// 		url: "ajax.php",
-    		// 		data: {
-    		// 			getIdDel: getID
-    		// 		},
-    		// 		success : function(response){
-    		// 			console.log(response);
-    		// 		}
-    		// 	});			
+			      $.ajax({
+			        method: "POST",
+			        url: "ajax.php",
+			        data: {
+			            getIdDel: getID
+			        },
+			        success : function(response){
+			          console.log(response);
+			        }
+			      });		
   
-    		// });
+    		});
 
 
     	})

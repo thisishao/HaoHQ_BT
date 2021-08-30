@@ -49,12 +49,16 @@
 
 		$_SESSION['cart'][$id]['qty'] = $Product["qty"];
 		print_r($_SESSION['cart']);
+
+		if ($Product["qty"] == 0) {
+			unset($_SESSION['cart'][$id]);
+		}
 	}
 
-	// if (isset($_POST['getIdDel'])) {
-	// 	$id = $_POST['getIdDel'];
-	// 	unset($_SESSION['cart'][$id]);
-	// }
+	if (isset($_POST['getIdDel'])) {
+		$id = $_POST['getIdDel'];
+		unset($_SESSION['cart'][$id]);
+	}
 
 	// session_destroy();
 ?>
