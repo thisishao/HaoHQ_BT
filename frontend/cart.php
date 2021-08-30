@@ -202,10 +202,8 @@
 									<p class="cart_total_price"><?php echo $tong ?></p>
 								</td>
 								<td class="cart_delete">
-								<form method="POST">
 									<input type="hidden" name="keys" value="<?php echo $key ?>">
 									<a class="cart_quantity_delete" href="" id="<?php echo $key; ?>"><i class="fa fa-times" id="<?php echo $key; ?>"></i></a>
-								</form>
 								</td>
 							</tr>
 						<?php } ?>
